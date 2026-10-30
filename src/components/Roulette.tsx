@@ -58,11 +58,11 @@ export function Roulette() {
     <main className="screen">
     {searchOpen && selected ? <RestaurantSearch menu={selected} onBack={() => setSearchOpen(false)} /> : <>
     <header className="topbar">
-      <div className="text-[13px] font-black tracking-[1.5px]">FOOD<span className="text-[var(--orange)]">.</span> ROULETTE</div>
-      <div className="rounded-full bg-[#ffe5c8] px-3 py-[9px] text-[10px] font-bold tracking-[1px] text-[#a13d19]">{selected ? "LET'S EAT!" : "WHAT'S FOR LUNCH?"}</div>
+      <div className="text-[13px] font-black tracking-[1.5px]">FOOD<span className="text-(--orange)">.</span> ROULETTE</div>
+      <div className="rounded-full bg-[#ffe5c8] px-3 py-2.25 text-[10px] font-bold tracking-[1px] text-[#a13d19]">{selected ? "LET'S EAT!" : "WHAT'S FOR LUNCH?"}</div>
     </header>
     {!selected ? <section className="welcome">
-      <div className="inline-block rounded-full bg-[#ffdf71] px-[13px] py-2 text-[11px] font-bold tracking-[1px] text-[#6f3b18]">GOOD FOOD, GOOD MOOD ✦</div>
+      <div className="inline-block rounded-full bg-[#ffdf71] px-3.25 py-2 text-[11px] font-bold tracking-[1px] text-[#6f3b18]">GOOD FOOD, GOOD MOOD ✦</div>
       <h1 className="greeting"><span>Feeling</span><span>Haaangry?</span></h1>
       <p className="m-0 text-[15px] leading-[1.55] text-[#765f54]">Can&apos;t decide what to eat?<br />Let&apos;s find something delicious.</p>
       <FoodIllustration />
