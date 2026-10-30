@@ -238,6 +238,15 @@ footer {
     .primary-button {
         transition: background-color 0.15s;
     }
+
+    .dish-card-spinning {
+        animation: roulette-pulse 0.35s ease-in-out infinite alternate;
+    }
+
+    @keyframes roulette-pulse {
+        from { border-color: #ffe4bd; transform: scale(1); }
+        to { border-color: #ffb44d; transform: scale(1.02); }
+    }
 }
 
 /* Fit the two screens into shorter viewports without page scrolling. */

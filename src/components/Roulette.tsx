@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { RestaurantSearch } from './RestaurantSearch';
 import { menus, randomMenu, type Menu } from '../lib/menus';
 
@@ -15,7 +15,39 @@ function FoodIllustration() {
 export function Roulette() {
   const [selected, setSelected] = useState<Menu | null>(null);
   const [searchOpen, setSearchOpen] = useState(false);
-  const choose = () => setSelected(randomMenu(menus));
+  const [spinning, setSpinning] = useState(false);
+  const spinningRef = useRef(false);
+  const timers = useRef<number[]>([]);
+
+  useEffect(() => () => timers.current.forEach(window.clearTimeout), []);
+
+  const choose = () => {
+    if (spinningRef.current) return;
+    const result = randomMenu(menus);
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setSelected(result);
+      return;
+    }
+
+    spinningRef.current = true;
+    setSpinning(true);
+    setSelected(randomMenu(menus));
+    // Increasing pauses make the draw feel like it is slowing to a stop.
+    let delay = 0;
+    timers.current = [50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 60, 70, 85, 110, 150, 210, 300, 420, 550, 450].map((pause, index, pauses) => {
+      delay += pause;
+      return window.setTimeout(() => {
+        if (index === pauses.length - 1) {
+          setSelected(result);
+          setSpinning(false);
+          spinningRef.current = false;
+          timers.current = [];
+        } else {
+          setSelected(randomMenu(menus));
+        }
+      }, delay);
+    });
+  };
 
   return <>
     <div className="rotate-notice" role="status">
@@ -37,17 +69,20 @@ export function Roulette() {
       <button className="primary-button" onClick={choose}>Let&apos;s eat! <span aria-hidden="true">→</span></button>
       <p className="hint">A LITTLE SURPRISE IS ON THE MENU</p>
     </section> : <section className="result">
-      <div className="text-[11px] font-bold tracking-[1.4px] text-[#a44720]">✦ THE FOOD GODS HAVE SPOKEN ✦</div>
-      <h1 className="result-title"><span>How about</span><span>this one?</span></h1>
-      <p className="m-0 text-[15px] leading-[1.55] text-[#765f54]">Your next delicious idea is ready.</p>
+      <div className="text-[11px] font-bold tracking-[1.4px] text-[#a44720]">{spinning ? '✦ THE FOOD GODS ARE THINKING ✦' : '✦ THE FOOD GODS HAVE SPOKEN ✦'}</div>
+      <h1 className="result-title"><span>{spinning ? 'Finding' : 'How about'}</span><span>{spinning ? 'your food...' : 'this one?'}</span></h1>
+      <p className="m-0 text-[15px] leading-[1.55] text-[#765f54]">{spinning ? 'Let the roulette decide!' : 'Your next delicious idea is ready.'}</p>
       <FoodIllustration />
-      <div className="dish-card" aria-live="polite">
-        <div className="text-[10px] font-bold tracking-[1.8px] text-[#a9481d]">TODAY&apos;S PICK</div>
+      <div className={`dish-card${spinning ? ' dish-card-spinning' : ''}`}>
+        <div className="text-[10px] font-bold tracking-[1.8px] text-[#a9481d]">{spinning ? 'SPINNING...' : "TODAY'S PICK"}</div>
+        <div aria-hidden={spinning}>
         <h2 lang="th">{selected.nameTh}</h2>
         <p>{selected.nameEn}</p>
-        <button className="primary-button" onClick={choose}><span aria-hidden="true">↻</span> Surprise me again</button>
+        </div>
+        <span className="sr-only" role="status">{spinning ? 'Choosing a dish' : `Today's pick: ${selected.nameTh}, ${selected.nameEn}`}</span>
+        <button className="primary-button" onClick={choose} disabled={spinning}><span aria-hidden="true">↻</span> {spinning ? 'Spinning...' : 'Surprise me again'}</button>
       </div>
-      <button className="nearby-button" onClick={() => setSearchOpen(true)}>Find nearby restaurants <span aria-hidden="true">→</span></button>
+      <button className="nearby-button" onClick={() => setSearchOpen(true)} disabled={spinning}>Find nearby restaurants <span aria-hidden="true">→</span></button>
       <p className="nearby-note">Places may serve this dish.</p>
     </section>}
     <footer>{selected ? 'GOOD FOOD IS JUST A SPIN AWAY ✦' : 'Made for hungry people, by hungry people.'}</footer>
