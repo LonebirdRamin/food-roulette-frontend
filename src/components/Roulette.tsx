@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { RestaurantSearch } from './RestaurantSearch';
 import { menus, randomMenu, type Menu } from '../lib/menus';
 
 function FoodIllustration() {
@@ -13,6 +14,7 @@ function FoodIllustration() {
 
 export function Roulette() {
   const [selected, setSelected] = useState<Menu | null>(null);
+  const [searchOpen, setSearchOpen] = useState(false);
   const choose = () => setSelected(randomMenu(menus));
 
   return <>
@@ -22,6 +24,7 @@ export function Roulette() {
       <p>Rotate your phone upright to find something delicious.</p>
     </div>
     <main className="screen">
+    {searchOpen && selected ? <RestaurantSearch menu={selected} onBack={() => setSearchOpen(false)} /> : <>
     <header className="topbar">
       <div className="text-[13px] font-black tracking-[1.5px]">FOOD<span className="text-[var(--orange)]">.</span> ROULETTE</div>
       <div className="rounded-full bg-[#ffe5c8] px-3 py-[9px] text-[10px] font-bold tracking-[1px] text-[#a13d19]">{selected ? "LET'S EAT!" : "WHAT'S FOR LUNCH?"}</div>
@@ -44,10 +47,11 @@ export function Roulette() {
         <p>{selected.nameEn}</p>
         <button className="primary-button" onClick={choose}><span aria-hidden="true">↻</span> Surprise me again</button>
       </div>
-      <button className="nearby-button" disabled aria-describedby="nearby-note">Find nearby restaurants <span aria-hidden="true">→</span></button>
-      <p id="nearby-note" className="nearby-note">Restaurant search is coming soon.</p>
+      <button className="nearby-button" onClick={() => setSearchOpen(true)}>Find nearby restaurants <span aria-hidden="true">→</span></button>
+      <p className="nearby-note">Places may serve this dish.</p>
     </section>}
     <footer>{selected ? 'GOOD FOOD IS JUST A SPIN AWAY ✦' : 'Made for hungry people, by hungry people.'}</footer>
+    </>}
     </main>
   </>;
 }

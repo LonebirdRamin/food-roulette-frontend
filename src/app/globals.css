@@ -205,8 +205,7 @@ button {
     margin-top: 16px;
     background: #ffcb55;
     color: #5c402e;
-    opacity: 0.7;
-    cursor: not-allowed;
+    cursor: pointer;
 }
 .nearby-note {
     color: #765f54;
@@ -374,4 +373,114 @@ footer {
         color: #765f54;
         font-size: 15px;
     }
+}
+
+
+/* Location and results use their own scroll area when results exceed the screen. */
+.search-screen {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    flex: 1;
+    padding: 22px 28px;
+}
+.search-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+.back-button {
+    border: 0;
+    background: none;
+    padding: 8px 0;
+    color: #9c3d18;
+    font-weight: bold;
+    cursor: pointer;
+}
+.search-brand { font-size: 12px; font-weight: 900; letter-spacing: 1.5px; }
+.search-brand span { color: var(--orange); }
+.location-panel, .results-content { overflow-y: auto; min-height: 0; padding: 4px 4px 12px; }
+
+/* Hide the scrollbar chrome while retaining touch, mouse and keyboard scrolling. */
+.location-panel, .results-content { scrollbar-width: none; }
+.location-panel::-webkit-scrollbar, .results-content::-webkit-scrollbar { display: none; }
+.location-panel {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding-bottom: 32px;
+}
+.location-icon {
+    display: grid;
+    place-items: center;
+    width: 100px;
+    height: 100px;
+    margin-bottom: 24px;
+    border-radius: 50%;
+    background: #ffdf71;
+    color: #d94313;
+}
+.location-icon svg { width: 46px; height: 46px; }
+.location-card {
+    width: 100%;
+    margin-top: 24px;
+    padding: 18px;
+    border: 2px solid #ffe4bd;
+    border-radius: 25px;
+    background: #fff;
+}
+.location-radius { margin: 0; color: #765f54; font-size: 13px; font-weight: bold; }
+.location-radius span { color: var(--orange); }
+.location-card .location-privacy { margin: 16px 0 0; }
+.search-kicker { color: #a44720; font-size: 11px; font-weight: bold; letter-spacing: 1.4px; }
+.location-panel h1, .results-content h1 { font-family: "Lobster", cursive; font-size: 42px; font-weight: 400; margin: 14px 0; }
+.location-panel > p, .results-intro { color: #765f54; font-size: 15px; line-height: 1.5; }
+.location-card .primary-button { margin-top: 16px; }
+.search-secondary { width: 100%; margin-top: 16px; padding: 13px; border: 0; border-radius: 15px; background: #ffcb55; color: var(--ink); font-weight: bold; cursor: pointer; }
+.search-error { color: #a52b18 !important; font-weight: bold; }
+.location-privacy, .distance-note { font-size: 12px !important; color: #765f54; }
+button:disabled { cursor: wait; opacity: .65; }
+.results-heading { text-align: center; }
+.results-content h1 { margin: 10px 0; color: var(--orange); }
+.results-intro { margin: 0 0 14px; }
+.results-count { display: inline-block; margin: 0 0 18px; padding: 8px 12px; border-radius: 30px; background: #ffe7b2; font-size: 11px; font-weight: bold; color: #75461f; }
+.places-container { background: white; border: 2px solid #ffe4bd; border-radius: 24px; padding: 0 16px; }
+.place-card { padding: 20px 2px; border-bottom: 1px solid #f0e6d9; }
+.place-heading { display: flex; justify-content: space-between; align-items: start; gap: 12px; }
+.place-heading h2 { font-size: 17px; font-weight: bold; margin: 0; }
+.distance-pill { color: #a44720; background: #fff1d5; border-radius: 20px; padding: 6px 9px; font-weight: bold; white-space: nowrap; font-size: 12px; }
+.place-card p { margin: 7px 0; color: #765f54; font-size: 13px; }
+.maps-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 8px;
+    padding: 10px 14px;
+    border-radius: 12px;
+    background: #ffcb55;
+    color: var(--ink);
+    font-size: 13px;
+    font-weight: bold;
+    text-decoration: none;
+}
+.maps-button:hover { background: #f5ba3e; }
+.maps-button:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+.provider-attribution { font-size: 11px !important; }
+.provider-attribution a { text-decoration: underline; }
+.google-attribution { position: sticky; top: -4px; z-index: 1; display: flex; justify-content: flex-end; padding: 10px 10px 5px; background: white; }
+.google-attribution img { height: 18px; width: auto; }
+.empty-results { padding: 20px; background: white; border-radius: 18px; }
+.empty-results p { margin: 6px 0; }
+@media (max-height: 750px) {
+    .search-screen { padding-top: 12px; padding-bottom: 12px; }
+    .search-header { margin-bottom: 8px; }
+    .location-icon { width: 76px; height: 76px; margin-bottom: 14px; }
+    .location-icon svg { width: 36px; height: 36px; }
+    .location-card { margin-top: 16px; padding: 14px; }
+    .location-panel h1, .results-content h1 { font-size: 34px; margin: 8px 0; }
 }
