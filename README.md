@@ -4,7 +4,7 @@ A Next.js app that helps you pick an everyday Thai meal and search for potential
 
 ## Run locally
 
-Install a recent Node.js version (20.9 or later), then from this folder run:
+Install Node.js 22.18 or later (Node.js 24 is recommended for deployment), then from this folder run:
 
 ```sh
 npm install
@@ -39,3 +39,15 @@ A successful response is `{"status":"ok"}`. This request goes from the browser o
 Choose a dish, select **Find nearby restaurants**, then explicitly allow browser location access. If access is denied, enable location permission in your browser settings and try again. The search returns potentially relevant places within 5 km, ordered by straight-line distance; it does not confirm that a place serves the selected dish. The Google Maps button opens the place search in a new tab. Google Places and third-party attribution are shown with results. The backend needs a configured Google Places API key for live results.
 
 The welcome and dish screens are fixed to the viewport. The location and results screens scroll within their panel when needed. Small landscape screens ask users to rotate their phone. Google Places content must not be cached beyond permitted exceptions; the search route uses `no-store`.
+
+
+## Deployment on Vercel
+
+1. Push the current frontend and backend commits to their GitHub repositories.
+2. Deploy the backend on Render using the instructions in the backend README. Confirm its `/api/health` endpoint returns `{"status":"ok"}`.
+3. In Vercel, import the frontend GitHub repository as a Next.js project. Select Node.js 24 in the project settings.
+4. Add the server-side environment variable `BACKEND_API_URL` with the Render backend's HTTPS origin, for example `https://your-backend.onrender.com`. Do not use the Google API key here.
+5. Deploy or redeploy after adding the environment variable. Open `/api/health` on the deployed frontend to check the connection.
+6. In the deployed site, test randomization, location permission, restaurant search, results and Google Maps links on both desktop and mobile. Browser geolocation requires HTTPS (or localhost for development).
+
+The backend's public search endpoint can incur Google Places charges. Review Google API key restrictions, quotas and billing alerts before deployment. Google Places also requires publicly accessible Terms of Use and a Privacy Policy; prepare and review those for your deployment.
